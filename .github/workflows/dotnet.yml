@@ -1,0 +1,26 @@
+name: 'dotNet'
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - feature/*
+      - hotfix/*
+    paths:
+      - 'src/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+      - feature/*
+      - hotfix/*
+    paths:
+      - 'src/**'
+  workflow_dispatch:
+
+jobs:
+  dotnet:
+    name: '.NET'
+    uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main
+

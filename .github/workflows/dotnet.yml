@@ -33,7 +33,7 @@ jobs:
     needs: build
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
     with:
-      image-name: 'your-image-name:latest'
+      image-name: 'szirmaibence98/testimage:latest'
       docker-context: '.'
       # Optionally specify a different Dockerfile path
       # dockerfile-path: 'path/to/your/Dockerfile'

@@ -20,7 +20,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-dotnet-workflow:
+  build:
+  name: 'Build'
     uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main
     with:
       dotnet-version: '8.0.x'

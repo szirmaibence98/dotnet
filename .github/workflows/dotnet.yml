@@ -26,3 +26,17 @@ jobs:
     with:
       dotnet-version: '8.0.x'
       working-directory: 'src' # Optional: specify if your solution file is not in the root directory
+
+
+
+  build-docker-image:
+    needs: build-and-test
+    uses: szirmaibence98/templates/.github/workflows/docker.yml@main
+    with:
+      image-name: 'your-image-name:latest'
+      docker-context: '.'
+      # Optionally specify a different Dockerfile path
+      # dockerfile-path: 'path/to/your/Dockerfile'
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

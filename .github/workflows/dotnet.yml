@@ -20,7 +20,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  dotnet:
-    name: '.NET'
+  call-dotnet-workflow:
     uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main
-
+    with:
+      dotnet-version: '8.0.x'
+      working-directory: 'src' # Optional: specify if your solution file is not in the root directory

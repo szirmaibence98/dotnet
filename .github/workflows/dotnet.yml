@@ -29,8 +29,8 @@ jobs:
 
 
 
-  build-docker-image:
-    needs: build-and-test
+  docker:
+    needs: build
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
     with:
       image-name: 'your-image-name:latest'

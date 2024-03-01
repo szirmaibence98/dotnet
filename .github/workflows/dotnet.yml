@@ -46,16 +46,15 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0
         with:
           useConfigFile: true
-  
-      - name: Set SemVerV2 Environment Variable
-        run: echo "SEMVERV2=${{ steps.determine_version.outputs.SemVerV2 }}" >> $GITHUB_ENV
+
         
-  some_other_job:
+  deploy_stage_1:
     needs: gitversion
     runs-on: ubuntu-latest
+
     steps:
-      - name: Use MajorMinorPatch variable
-        run: echo "MajorMinorPatch value is ${{ steps.determine_version.outputs.MajorMinorPatch }}"  
+      - name: Print version
+        run: echo "Version: ${{ steps.gitversion.outputs.determine_version.outputs.MajorMinorPatch }}"
 
   release:
     needs: gitversion

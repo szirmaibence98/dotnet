@@ -60,7 +60,11 @@ jobs:
         with:
           useConfigFile: true
 
-          
+      - name: Upload Version Artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: version
+          path: ${{ steps.determine_version.outputs.jsonOutputPath }}          
         
   build:
     name: 'Build'

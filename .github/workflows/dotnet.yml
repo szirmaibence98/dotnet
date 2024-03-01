@@ -27,23 +27,6 @@ on:
 jobs:
 
 
-  version_job:
-    name: Create version number
-    runs-on: ubuntu-latest
-    outputs:
-      version_number: ${{ steps.version_step.outputs.version_number }}
-    steps:
-      - name: version_step
-        id: version_step
-        run: echo "::set-output name=version_number::1.2.3"
-
-  output:
-    name: Output
-    runs-on: ubuntu-latest
-    needs: version_job
-    steps:
-      - name: Print version
-        run: echo "Version number: ${{ needs.version_job.outputs.version_number }}"
 
 
 
@@ -71,14 +54,18 @@ jobs:
           useConfigFile: true
           
 
-
-  deploy_stage_1:
+  write_to_file:
     needs: gitversion
     runs-on: ubuntu-latest
     steps:
-      - name: Print version
-        run: echo "Deploying version: ${{ needs.gitversion.outputs.version }}"
+      - name: Download version file
+        uses: actions/download-artifact@v2
+        with:
+          name: version
+          path: /tmp/version
 
+      - name: Echo version
+        run: cat /tmp/version/MajorMinorPatch
         
   release:
     needs: gitversion

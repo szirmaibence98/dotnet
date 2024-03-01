@@ -49,7 +49,13 @@ jobs:
   
       - name: Set SemVerV2 Environment Variable
         run: echo "SEMVERV2=${{ steps.determine_version.outputs.SemVerV2 }}" >> $GITHUB_ENV
-  
+        
+  some_other_job:
+    needs: gitversion
+    runs-on: ubuntu-latest
+    steps:
+      - name: Use MajorMinorPatch variable
+        run: echo "MajorMinorPatch value is ${{ steps.determine_version.outputs.MajorMinorPatch }}"  
 
   release:
     needs: gitversion
@@ -64,7 +70,7 @@ jobs:
           fi
 
       - name: Example Step
-        run: echo "SemVerV2 value is $SEMVERV2"
+        run: echo "SemVerV2 value is $GITHUB_ENV "
 
     
   build:

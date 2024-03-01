@@ -67,8 +67,9 @@ jobs:
           else
             echo "Not creating release"
           fi
-    - name: Example Step
-      run: echo "SemVerV2 value is $SEMVERV2"
+
+      - name: Example Step
+        run: echo "SemVerV2 value is $SEMVERV2"
 
     
   build:

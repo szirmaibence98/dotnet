@@ -25,12 +25,7 @@ on:
         required: true
         default: false
 
-        
 jobs:
-
-
-
-      
   gitversion:
     name: 'Determine Version'
     runs-on: ubuntu-latest

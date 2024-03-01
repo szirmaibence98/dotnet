@@ -33,7 +33,7 @@ jobs:
         uses: nmcc/actions-gitversion@v1
         with:
           # Provide the path to your Git repository directory
-          path-to-gitversion: ./GitVersion.yml
+          path-to-gitversion: GitVersion.yml
 
 
       - name: Determine SemVer version

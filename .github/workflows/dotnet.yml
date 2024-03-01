@@ -48,13 +48,14 @@ jobs:
           useConfigFile: true
 
         
+      
   deploy_stage_1:
     needs: gitversion
     runs-on: ubuntu-latest
 
     steps:
       - name: Print version
-        run: echo "Version: ${{ steps.gitversion.outputs.determine_version.outputs.MajorMinorPatch }}"
+        run: echo "Version: ${{ needs.gitversion.outputs.determine_version.outputs.MajorMinorPatch }}"
 
   release:
     needs: gitversion

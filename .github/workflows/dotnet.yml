@@ -60,13 +60,12 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0
         with:
           useConfigFile: true
-        run: echo "::set-output name=jsonOutputPath::path/to/version.json"
   
       - name: Upload Version Artifact
         uses: actions/upload-artifact@v4.3.1
         with:
           name: version
-          path: ${{ steps.determine_version.outputs.jsonOutputPath }}        
+          path: ${{ steps.determine_version.outputs.jsonOutputPath }}  
 
     
   build:

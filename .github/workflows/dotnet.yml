@@ -29,7 +29,7 @@ jobs:
     name: 'Determine Version'
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.determine_version.outputs.MajorMinorPatch }}    
+      version: ${{ steps.determine_version.outputs.MajorMinorPatch }}      
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.1
@@ -48,27 +48,15 @@ jobs:
         with:
           useConfigFile: true
           
-      - name: Print version
-        run: ls -la
-          
-      - name: Archive version
-        uses: actions/upload-artifact@v2
-        with:
-          name: version
-          path: ${{ steps.determine_version.outputs.MajorMinorPatch }}
+
 
 
   deploy_stage_1:
     needs: gitversion
     runs-on: ubuntu-latest
     steps:
-      - name: Download version
-        uses: actions/download-artifact@v2
-        with:
-          name: version
-          path: /tmp/version
       - name: Print version
-        run: cat /tmp/version/MajorMinorPatch
+        run: echo "Deploying version: ${{ needs.gitversion.outputs.version }}"
         
   release:
     needs: gitversion

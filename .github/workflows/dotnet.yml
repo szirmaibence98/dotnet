@@ -25,12 +25,20 @@ jobs:
   buildrrr:
     runs-on: ubuntu-latest
     container:
-      image: maven:3.6.3
+      image: mcr.microsoft.com/dotnet/sdk:8.0
+      options: --user root
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Build with Maven
-        run: mvn clean install
+
+      - name: Restore dependencies
+        run: dotnet restore ./src/YourProject.csproj
+
+      - name: Build
+        run: dotnet build ./src/YourProject.csproj --configuration Release
+
+      - name: Test
+        run: dotnet test ./src/YourProject.csproj --configuration Release
 
 
 

@@ -47,6 +47,10 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0
         with:
           useConfigFile: true
+          
+      - name: Print version
+        run: ls -la
+          
       - name: Archive version
         uses: actions/upload-artifact@v2
         with:

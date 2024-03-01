@@ -57,7 +57,7 @@ jobs:
           preferLatestVersion: true
           
       - name: Add GitVersion to PATH
-        run: echo "::add-path::$(dotnet tool run gitversion --tool-path)"
+        run: echo "PATH=$PATH:$(dirname $(which gitversion))" >> $GITHUB_PATH
 
       - name: Determine SemVer version
         id: version

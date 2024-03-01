@@ -25,26 +25,17 @@ jobs:
     name: 'Determine Version'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
       
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Install GitVersion
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y wget
-          wget -O gitversion.tar.gz https://github.com/GitTools/GitVersion/releases/download/5.6.8/gitversion-linux-x64-5.6.8.tar.gz
-          tar -xzf gitversion.tar.gz -C gitversion
-          chmod +x gitversion/GitVersion
-          sudo mv gitversion/GitVersion /usr/local/bin/
-          gitversion --version  # Print GitVersion version for verification
+        uses: nmcc/actions-gitversion@v1
 
-      - name: Determine Version
+      - name: Determine SemVer version
         id: version
-        run: |
-          gitversion /updateassemblyinfo
-
-      - name: Set Version Environment Variable
-        run: echo "VERSION=${{ steps.version.outputs.semVer }}" >> $GITHUB_ENV
+        run: echo ::set-output name=semver::$(gitversion /output json)
+          
         
   build:
     name: 'Build'

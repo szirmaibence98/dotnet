@@ -51,8 +51,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Print version
-        run: echo "Version: ${{ needs.gitversion.outputs.determine_version.outputs.MajorMinorPatch }}"
-
+        run: echo "Version: ${{ needs.gitversion.outputs.determine_version.MajorMinorPatch }}"
+        
   release:
     needs: gitversion
     runs-on: ubuntu-latest

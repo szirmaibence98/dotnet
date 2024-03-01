@@ -48,7 +48,6 @@ jobs:
     name: 'Determine Version'
     runs-on: ubuntu-latest
     steps:
-      
       - name: Checkout code
         uses: actions/checkout@v2
         with:
@@ -59,16 +58,12 @@ jobs:
         with:
           versionSpec: '5.x'     
           preferLatestVersion: true
-          
 
       - name: Determine Version
         uses: gittools/actions/gitversion/execute@v0
         with:
           useConfigFile: true
 
-      - name: Determine SemVer version
-        id: version
-        run: echo ::set-output name=semver::$(gitversion /output json)
           
         
   build:

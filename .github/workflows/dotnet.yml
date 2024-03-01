@@ -52,7 +52,15 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0
         with:
           useConfigFile: true
-          
+ 
+      - name: Save version to file
+        run: echo "${{ steps.determine_version.outputs.MajorMinorPatch }}" > /tmp/version
+
+      - name: Upload version artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: version
+          path: /tmp/version          
 
   write_to_file:
     needs: gitversion

@@ -62,6 +62,7 @@ jobs:
           name: version
           path: /tmp/version          
 
+
   write_to_file:
     needs: gitversion
     runs-on: ubuntu-latest
@@ -73,7 +74,7 @@ jobs:
           path: /tmp/version
 
       - name: Echo version
-        run: cat /tmp/version/MajorMinorPatch
+        run: cat /tmp/version
         
   release:
     needs: gitversion

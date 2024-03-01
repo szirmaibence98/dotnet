@@ -49,23 +49,14 @@ jobs:
         uses: actions/checkout@v2
 
       - name: GitHub Action to Setup GitVersion
-        # You may pin to the exact commit or the version.
-        # uses: StanleyGoldman/setup-gitversion@a374f5e1b8c33fb6efd03c402cb511f02eafa245
         uses: StanleyGoldman/setup-gitversion@v1.0.1
         with:
-          # Version range or exact version of GitVersion to use
           gitversion-version: 5.x
-          # Whether to run GitVersion
-          run-gitversion: # optional, default is false
-          # Args to run with GitVersion
-          run-gitversion-args: # optional
-          
+          run-gitversion: true
 
-      - name: GitVersion action
-        uses: nmcc/actions-gitversion@v1
-        with:
-          # Provide the path to your Git repository directory
-          path-to-gitversion: GitVersion.yml
+      - name: Run GitVersion
+        run: gitversion        
+
 
 
       - name: Determine SemVer version

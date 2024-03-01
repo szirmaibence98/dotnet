@@ -55,7 +55,9 @@ jobs:
         with:
           versionSpec: '5.x'     
           preferLatestVersion: true
-
+          
+      - name: Add GitVersion to PATH
+        run: echo "::add-path::$(dotnet tool run gitversion --tool-path)"
 
       - name: Determine SemVer version
         id: version

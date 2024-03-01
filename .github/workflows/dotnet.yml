@@ -22,26 +22,6 @@ on:
 jobs:
 
 
-  buildrrr:
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/dotnet/sdk:8.0
-      options: --user root
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Restore dependencies
-        run: dotnet restore ./src/*.csproj
-
-      - name: Build
-        run: dotnet build ./src/*.csproj --configuration Release
-
-      - name: Test
-        run: dotnet test ./src/*.csproj --configuration Release
-
-
-
   build:
     name: 'Build'
     uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main

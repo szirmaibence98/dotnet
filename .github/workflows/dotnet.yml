@@ -18,8 +18,20 @@ on:
     paths:
       - 'src/**'
   workflow_dispatch:
-
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'  # Default value if not specified
+        
 jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Environment
+        run: echo "Deploying to ${{ github.event.inputs.environment }}"
 
   gitversion:
     name: 'Determine Version'
@@ -28,6 +40,19 @@ jobs:
       
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: GitHub Action to Setup GitVersion
+        # You may pin to the exact commit or the version.
+        # uses: StanleyGoldman/setup-gitversion@a374f5e1b8c33fb6efd03c402cb511f02eafa245
+        uses: StanleyGoldman/setup-gitversion@v1.0.1
+        with:
+          # Version range or exact version of GitVersion to use
+          gitversion-version: 
+          # Whether to run GitVersion
+          run-gitversion: # optional, default is false
+          # Args to run with GitVersion
+          run-gitversion-args: # optional
+          
 
       - name: GitVersion action
         uses: nmcc/actions-gitversion@v1

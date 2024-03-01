@@ -54,13 +54,13 @@ jobs:
           useConfigFile: true
  
       - name: Save version to file
-        run: echo "${{ steps.determine_version.outputs.MajorMinorPatch }}" > /tmp/version
+        run: echo "${{ steps.determine_version.outputs.MajorMinorPatch }}" > /tmp/version.txt
 
       - name: Upload version artifact
         uses: actions/upload-artifact@v2
         with:
           name: version
-          path: /tmp/version          
+          path: /tmp/version.txt      
 
 
   write_to_file:
@@ -71,10 +71,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: version
-          path: /tmp/version
+          path: /tmp
 
       - name: Echo version
-        run: cat /tmp/version
+        run: cat /tmp/version.txt
         
   release:
     needs: gitversion

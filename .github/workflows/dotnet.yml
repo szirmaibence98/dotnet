@@ -1,4 +1,8 @@
-name: 'dotNet'
+steps:
+  - name: Determine Version
+    uses: gittools/actions/gitversion/execute@v0
+    with:
+      useConfigFile: truename: 'dotNet'
 
 on:
   push:
@@ -56,8 +60,11 @@ jobs:
           versionSpec: '5.x'     
           preferLatestVersion: true
           
-      - name: Add GitVersion to PATH
-        run: echo "PATH=$PATH:$(dirname $(which gitversion))" >> $GITHUB_PATH
+
+      - name: Determine Version
+        uses: gittools/actions/gitversion/execute@v0
+        with:
+          useConfigFile: true
 
       - name: Determine SemVer version
         id: version

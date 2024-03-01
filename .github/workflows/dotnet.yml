@@ -103,7 +103,7 @@ jobs:
     needs: build
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
     with:
-      image-name: 'szirmaibence98/testimage'
+      image-name: szirmaibence98/testimage
       docker-context: '.'
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}

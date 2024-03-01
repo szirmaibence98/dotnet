@@ -29,8 +29,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install GitVersion
+      - name: GitVersion action
         uses: nmcc/actions-gitversion@v1
+        with:
+          # Provide the path to your Git repository directory
+          path-to-gitversion: .
+
 
       - name: Determine SemVer version
         id: version

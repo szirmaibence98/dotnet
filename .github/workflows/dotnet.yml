@@ -1,20 +1,19 @@
-
 name: 'dotNet'
 on:
   push:
     branches:
       - main
       - develop
-      - feature/*
-      - hotfix/*
+      - 'feature/*'
+      - 'hotfix/*'
     paths:
       - 'src/**'
   pull_request:
     branches:
       - main
       - develop
-      - feature/*
-      - hotfix/*
+      - 'feature/*'
+      - 'hotfix/*'
     paths:
       - 'src/**'
 
@@ -47,12 +46,9 @@ jobs:
         with:
           useConfigFile: true
 
-        
-      
   deploy_stage_1:
     needs: gitversion
     runs-on: ubuntu-latest
-
     steps:
       - name: Print version
         run: echo "Version: ${{ needs.gitversion.outputs.determine_version.outputs.MajorMinorPatch }}"
@@ -71,7 +67,6 @@ jobs:
 
       - name: Example Step
         run: echo "SemVerV2 value is $GITHUB_ENV "
-
     
   build:
     name: 'Build'
@@ -81,16 +76,12 @@ jobs:
       dotnet-version: '8.0.x'
       working-directory: 'src' # Optional: specify if your solution file is not in the root directory
 
-
-
   docker:
     needs: build
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
     with:
       image-name: 'szirmaibence98/testimage:latest'
       docker-context: '.'
-      # Optionally specify a different Dockerfile path
-      # dockerfile-path: 'path/to/your/Dockerfile'
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

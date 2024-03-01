@@ -44,8 +44,8 @@ jobs:
     name: 'Determine Version'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
           

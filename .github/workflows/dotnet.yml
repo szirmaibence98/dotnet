@@ -17,21 +17,28 @@ on:
       - hotfix/*
     paths:
       - 'src/**'
-  workflow_dispatch:
+
   workflow_dispatch:
     inputs:
-      environment:
-        description: 'Environment to deploy to'
+      create-release:
+        description: 'Create release'
         required: true
-        default: 'production'  # Default value if not specified
+        default: false
+
         
 jobs:
 
-  deploy:
+
+  release:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Environment
-        run: echo "Deploying to ${{ github.event.inputs.environment }}"
+      - name: Check if release should be created
+        run: |
+          if ${{ github.event.inputs.create-release }}; then
+            echo "Creating release"
+          else
+            echo "Not creating release"
+          fi
 
   gitversion:
     name: 'Determine Version'

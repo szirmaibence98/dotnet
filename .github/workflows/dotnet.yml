@@ -65,7 +65,8 @@ jobs:
         uses: actions/upload-artifact@v4.3.1
         with:
           name: version
-          path: ${{ steps.determine_version.outputs.jsonOutputPath }}  
+          path: ${{ env.GitVersion_informationalVersion }}
+
 
     
   build:

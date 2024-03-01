@@ -20,6 +20,20 @@ on:
   workflow_dispatch:
 
 jobs:
+
+jobs:
+  buildrrr:
+    runs-on: ubuntu-latest
+    container:
+      image: maven:3.6.3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build with Maven
+        run: mvn clean install
+
+
+
   build:
     name: 'Build'
     uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main

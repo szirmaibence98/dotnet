@@ -47,16 +47,14 @@ jobs:
       
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: GitHub Action to Setup GitVersion
-        uses: StanleyGoldman/setup-gitversion@v1.0.1
         with:
-          gitversion-version: 5.x
-          run-gitversion: true
-
-      - name: Run GitVersion
-        run: gitversion        
-
+          fetch-depth: 0
+          
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0
+        with:
+          versionSpec: '5.x'     
+          preferLatestVersion: true
 
 
       - name: Determine SemVer version

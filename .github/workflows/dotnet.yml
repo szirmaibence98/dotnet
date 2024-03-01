@@ -29,17 +29,8 @@ on:
 jobs:
 
 
-  release:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check if release should be created
-        run: |
-          if ${{ github.event.inputs.create-release }}; then
-            echo "Creating release"
-          else
-            echo "Not creating release"
-          fi
 
+      
   gitversion:
     name: 'Determine Version'
     runs-on: ubuntu-latest
@@ -61,13 +52,23 @@ jobs:
         with:
           useConfigFile: true
   
-      - name: Upload Version Artifact
-        uses: actions/upload-artifact@v4.3.1
-        with:
-          name: version
-          path: version.json
+      - name: Set SemVerV2 Environment Variable
+        run: echo "SEMVERV2=${{ steps.determine_version.outputs.SemVerV2 }}" >> $GITHUB_ENV
+  
 
-
+  release:
+    needs: gitversion
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if release should be created
+        run: |
+          if ${{ github.event.inputs.create-release }}; then
+            echo "Creating release"
+          else
+            echo "Not creating release"
+          fi
+    - name: Example Step
+      run: echo "SemVerV2 value is $SEMVERV2"
 
     
   build:

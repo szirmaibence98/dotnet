@@ -169,8 +169,7 @@ jobs:
 
 
 
-  
-  gitleaks:
+  gitleaks3:
     name: Run Gitleaks Scan
     runs-on: ubuntu-latest
     steps:

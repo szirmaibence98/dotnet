@@ -58,11 +58,12 @@ jobs:
         run: |
           if grep -q '"results":\[\]' trivy-results.sarif; then
             echo "No vulnerabilities found ✅"
-            echo "::set-env name=TRIVY_RESULT::No vulnerabilities found ✅"
+            echo "TRIVY_RESULT=No vulnerabilities found ✅" >> $GITHUB_ENV
           else
             echo "Vulnerabilities found ❌"
-            echo "::set-env name=TRIVY_RESULT::Vulnerabilities found ❌"
+            echo "TRIVY_RESULT=Vulnerabilities found ❌" >> $GITHUB_ENV
           fi
+
 
 
 

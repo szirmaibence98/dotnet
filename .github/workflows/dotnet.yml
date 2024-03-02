@@ -26,13 +26,16 @@ on:
 
 jobs:
   
-  semgrep-full:
+    semgrep-full:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
+    container:
+      image: returntocorp/semgrep
     steps:
+      # Install Semgrep
+      - name: Install Semgrep
+        run: |
+          pip install semgrep
+  
       # Checkout Repository
       - name: Checkout Repository
         uses: actions/checkout@v4.1.1
@@ -73,6 +76,7 @@ jobs:
         with:
           sarif_file: report.sarif
         if: always()
+
 
 
             

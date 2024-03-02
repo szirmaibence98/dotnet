@@ -33,13 +33,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Provide Docker Hub credentials
+        run: echo "${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
       - name: Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.18.0
         with:
           input: szirmaibence98/testimage:0.1.0
           format: template
-          template: "@/contrib/junit.tpl"
+          template: @/contrib/junit.tpl
           output: junit-report.xml
+          scan-type: image
+          scan-ref: .
+          ignore-unfixed: false
+          vuln-type: os,library
+          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          list-all-pkgs: false
 
       - name: Save Trivy Scan Results
         uses: actions/upload-artifact@v2

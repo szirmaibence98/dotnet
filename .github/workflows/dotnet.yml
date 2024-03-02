@@ -66,9 +66,10 @@ jobs:
         # step 5: Extract SARIF file from the ZIP archive
         - name: Extract SARIF file
           run: |
-            unzip report.zip
+            unzip $GITHUB_WORKSPACE/report.zip
             mv report.sarif $GITHUB_WORKSPACE/report.sarif
           working-directory: ${{ github.workspace }}
+
 
   
   gitversion:

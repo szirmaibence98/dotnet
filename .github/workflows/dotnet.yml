@@ -76,11 +76,6 @@ jobs:
 
 
 
-    config: # optional
-    # Access token to post results to the semgrep app.
-
-    publishToken: # optional
-          
 
           
       - name: Install GitVersion

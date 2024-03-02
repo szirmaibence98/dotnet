@@ -290,7 +290,7 @@ jobs:
     name: 'Determine Version'
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.determine_version.outputs.MajorMinorPatch }}      
+      version: ${{ steps.determine_version.outputs.MajorMinorPatch }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4.1.1

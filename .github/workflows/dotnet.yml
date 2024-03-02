@@ -61,16 +61,16 @@ jobs:
           name: gitleaks-results
           path: gitleaks-results-*.sarif  # Uploads all SARIF files matching the pattern
 
-      - name: Send Gitleaks Report to Slack
-        if: failure()  # Executes only if Gitleaks scan fails
-        uses: rtCamp/action-slack-notify@v3
-        with:
-          status: failure
-          text: |
-            Gitleaks scan detected potential leaks in the repository. Check the attached report for details.
-          attachments: gitleaks-results-*.sarif
-        env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+#      - name: Send Gitleaks Report to Slack
+#        if: failure()  # Executes only if Gitleaks scan fails
+#        uses: rtCamp/action-slack-notify@v3
+#        with:
+#          status: failure
+#          text: |
+#            Gitleaks scan detected potential leaks in the repository. Check the attached report for details.
+#          attachments: gitleaks-results-*.sarif
+#        env:
+#          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   semgrep-full:
     runs-on: ubuntu-latest

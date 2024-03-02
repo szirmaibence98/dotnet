@@ -103,16 +103,22 @@ jobs:
           name: trivy-results
           path: trivy-results.sarif
   
-      - name: Summarize Vulnerabilities
+      - name: Summarize Gitleaks Findings
+        if: ${{ always() }}
         run: |
-          sudo apt-get install jq
-          VULNERABILITIES=$(jq '.runs[0].results | map(.ruleId + ": " + .message.text) | .[]' trivy-results.sarif | sed 's/^/ - /')
-          if [ -z "$VULNERABILITIES" ]; then
-            echo "No vulnerabilities found." >> $GITHUB_STEP_SUMMARY
+          if [ ! -s "results.sarif" ]; then
+            echo "No leaks detected. ✅" >> $GITHUB_STEP_SUMMARY
           else
-            echo "Vulnerabilities found:" >> $GITHUB_STEP_SUMMARY
-            echo "$VULNERABILITIES" >> $GITHUB_STEP_SUMMARY
+            sudo apt-get install jq -y
+            LEAKS=$(jq '.runs[0].results | map(.ruleId + ": " + .message.text) | .[]' results.sarif | sed 's/^/ - /')
+            if [ -z "$LEAKS" ]; then
+              echo "No leaks detected. ✅" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "Leaks found: ❌" >> $GITHUB_STEP_SUMMARY
+              echo "$LEAKS" >> $GITHUB_STEP_SUMMARY
+            fi
           fi
+
 
 
 

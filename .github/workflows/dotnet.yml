@@ -172,6 +172,22 @@ jobs:
           name: snyk-results
           path: snyk-results-*.sarif
 
+      - name: Summarize Snyk Findings
+        if: ${{ always() }}
+        run: |
+          sudo apt-get install jq -y
+          SARIF_FILE=$(ls snyk-results-*.sarif)
+          if [ ! -f "$SARIF_FILE" ]; then
+            echo "Snyk SARIF file not found. ❌" >> $GITHUB_STEP_SUMMARY
+          else
+            VULNERABILITIES=$(jq '.runs[0].results | if length == 0 then "No vulnerabilities found." else map(.ruleId + ": " + .message.text) | .[] end' $SARIF_FILE)
+            if [ "$VULNERABILITIES" == "No vulnerabilities found." ]; then
+              echo "$VULNERABILITIES" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "Vulnerabilities found:" >> $GITHUB_STEP_SUMMARY
+              echo "$VULNERABILITIES" | sed 's/^/ - /' >> $GITHUB_STEP_SUMMARY
+            fi
+          fi
 
 
 

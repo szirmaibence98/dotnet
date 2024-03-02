@@ -28,7 +28,40 @@ jobs:
 
 
 
+  semgrep-full:
+      runs-on: ubuntu-latest
+      container:
+        image: returntocorp/semgrep
 
+      steps:
+
+        # step 1
+        - name: Checkout Repository
+          uses: actions/checkout@v4.1.1
+          with:
+            fetch-depth: 0
+
+        # step 2
+        - name: full scan
+          run: |
+            semgrep \
+              --sarif --output report.sarif \
+              --metrics=off \
+              --config="p/default"
+
+        # step 3
+        
+        - name: save report as pipeline artifact
+          uses: actions/upload-artifact@v4.3.1
+          with:
+            name: report.sarif
+            path: report.sarif
+            
+        # step 4
+        - name: Download report
+          uses: actions/download-artifact@v4.3.1
+          with: 
+            name: report.sarif
 
   gitversion:
     name: 'Determine Version'
@@ -40,6 +73,15 @@ jobs:
         uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
+
+
+
+    config: # optional
+    # Access token to post results to the semgrep app.
+
+    publishToken: # optional
+          
+
           
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0

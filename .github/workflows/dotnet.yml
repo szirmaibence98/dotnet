@@ -25,8 +25,7 @@ on:
         default: false
 
 jobs:
-
-
+  
   snyk:
     permissions:
       contents: read
@@ -38,6 +37,8 @@ jobs:
   
       - name: Set up Snyk CLI to check for security issues
         uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
+        with:
+          language: dotnet
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
   
@@ -61,6 +62,7 @@ jobs:
         with:
           name: snyk-results
           path: snyk-results-*.sarif
+
 
 
 

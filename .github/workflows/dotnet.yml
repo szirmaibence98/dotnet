@@ -74,8 +74,7 @@ jobs:
 
 
 
-
-
+  
   trivy:
     runs-on: ubuntu-latest
     steps:
@@ -104,17 +103,16 @@ jobs:
           name: trivy-results
           path: trivy-results.sarif
   
-      - name: Check Trivy Results
-        if: ${{ always() }}
+      - name: Summarize Vulnerabilities
         run: |
-          if grep -q '"results":\[\]' trivy-results.sarif; then
-            echo "No vulnerabilities found ✅"
-            echo "TRIVY_RESULT=No vulnerabilities found ✅" >> $GITHUB_ENV
+          sudo apt-get install jq
+          VULNERABILITIES=$(jq '.runs[0].results | map(.ruleId + ": " + .message.text) | .[]' trivy-results.sarif | sed 's/^/ - /')
+          if [ -z "$VULNERABILITIES" ]; then
+            echo "No vulnerabilities found." >> $GITHUB_STEP_SUMMARY
           else
-            echo "Vulnerabilities found ❌"
-            echo "TRIVY_RESULT=Vulnerabilities found ❌" >> $GITHUB_ENV
+            echo "Vulnerabilities found:" >> $GITHUB_STEP_SUMMARY
+            echo "$VULNERABILITIES" >> $GITHUB_STEP_SUMMARY
           fi
-
 
 
 

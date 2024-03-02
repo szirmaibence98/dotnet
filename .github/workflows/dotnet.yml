@@ -27,9 +27,7 @@ on:
 jobs:
 
 
-
-
-  gitleaks2:
+  gitleaks:
     name: Run Gitleaks Scan
     runs-on: ubuntu-latest
     steps:
@@ -63,6 +61,7 @@ jobs:
             echo "No leaks detected ✅"
           else
             echo "Vulnerabilities found ❌"
+            cat results.sarif
           fi
 
       - name: Upload Gitleaks Results
@@ -71,51 +70,6 @@ jobs:
         with:
           name: gitleaks-results
           path: gitleaks-results-*.sarif  # Uploads all SARIF files matching the pattern
-
-  trivy2:
-    name: Run Trivy Vulnerability Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Download Trivy and JUnit Template
-        run: |
-          wget https://github.com/aquasecurity/trivy/releases/download/v0.45.0/trivy_0.45.0_Linux-64bit.tar.gz
-          tar zxvf trivy_0.45.0_Linux-64bit.tar.gz
-          sudo mv trivy /usr/local/bin/
-          wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/junit.tpl -O junit.tpl
-
-      - name: Download Docker image
-        run: docker pull szirmaibence98/testimage:0.1.0
-
-      - name: Run Trivy Vulnerability Scan
-        id: trivy-scan
-        run: |
-          trivy image --severity HIGH,CRITICAL --format sarif -o trivy-results.sarif szirmaibence98/testimage:0.1.0
-          echo "✅ Trivy scan completed"
-
-      - name: Save Trivy Scan Results
-        uses: actions/upload-artifact@v2
-        with:
-          name: trivy-results
-          path: trivy-results.sarif
-
-      - name: Check Trivy Results
-        if: ${{ always() }}
-        run: |
-          if grep -q '"results":\[\]' trivy-results.sarif; then
-            echo "No vulnerabilities found ✅"
-          else
-            echo "Vulnerabilities found ❌"
-          fi
-
-      - name: Upload Trivy Results
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: trivy-results
-          path: trivy-results.sarif
 
 
 

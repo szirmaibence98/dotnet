@@ -27,55 +27,55 @@ on:
 jobs:
 
   semgrep-full:
-  runs-on: ubuntu-latest
-  container:
-    image: returntocorp/semgrep
-  steps:
-    # Install Semgrep
-    - name: Install Semgrep
-      run: |
-        pip install semgrep
-
-    # Checkout Repository
-    - name: Checkout Repository
-      uses: actions/checkout@v4.1.1
-      with:
-        fetch-depth: 0
-
-    # Run Semgrep with SARIF output
-    - name: Run Semgrep with SARIF output
-      run: |
-        semgrep \
-          --sarif --output report.sarif \
-          --metrics=off \
-          --config="p/default"
-
-    # Save report as pipeline artifact
-    - name: Save report as pipeline artifact
-      uses: actions/upload-artifact@v4.3.1
-      with:
-        name: report.sarif
-        path: report.sarif
-
-    # Download report artifact
-    - name: Download report
-      uses: actions/download-artifact@v4.1.4
-      with: 
-        name: report.sarif
-
-    # Extract SARIF file from the ZIP archive
-    - name: Extract SARIF file
-      run: |
-        unzip $GITHUB_WORKSPACE/report.zip
-        mv $GITHUB_WORKSPACE/report.sarif $GITHUB_WORKSPACE/report.sarif
-      working-directory: ${{ github.workspace }}
-
-    # Upload SARIF file to GitHub
-    - name: Upload SARIF file
-      uses: github/codeql-action/upload-sarif@v3
-      with:
-        sarif_file: report.sarif
-      if: always()
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep
+    steps:
+      # Install Semgrep
+      - name: Install Semgrep
+        run: |
+          pip install semgrep
+  
+      # Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+  
+      # Run Semgrep with SARIF output
+      - name: Run Semgrep with SARIF output
+        run: |
+          semgrep \
+            --sarif --output report.sarif \
+            --metrics=off \
+            --config="p/default"
+  
+      # Save report as pipeline artifact
+      - name: Save report as pipeline artifact
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: report.sarif
+          path: report.sarif
+  
+      # Download report artifact
+      - name: Download report
+        uses: actions/download-artifact@v4.1.4
+        with: 
+          name: report.sarif
+  
+      # Extract SARIF file from the ZIP archive
+      - name: Extract SARIF file
+        run: |
+          unzip $GITHUB_WORKSPACE/report.zip
+          mv $GITHUB_WORKSPACE/report.sarif $GITHUB_WORKSPACE/report.sarif
+        working-directory: ${{ github.workspace }}
+  
+      # Upload SARIF file to GitHub
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: report.sarif
+        if: always()
 
 
 

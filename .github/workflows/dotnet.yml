@@ -28,15 +28,49 @@ jobs:
 
 
   gitleaks:
+    name: Run Gitleaks Scan
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.1
+      - name: Checkout Repository
+        uses: actions/checkout@v2
         with:
-          fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2.3.4
+          fetch-depth: 0  # Fetches the complete commit history
+
+      - name: Setup Gitleaks
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.16'
+
+      - name: Run Gitleaks
+        id: gitleaks
+        uses: gitleaks/gitleaks-action@v2.3.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}} # Only required for Organizations, not personal accounts.
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+      - name: Save Gitleaks Results
+        if: ${{ always() }}  # Always execute even if previous steps fail
+        run: |
+          mv results.sarif gitleaks-results-$(date +"%Y%m%d-%H%M%S").sarif
+          echo "✅ Gitleaks scan completed"
+
+      - name: Upload Gitleaks Results
+        if: ${{ always() }}  # Always execute even if previous steps fail
+        uses: actions/upload-artifact@v2
+        with:
+          name: gitleaks-results
+          path: gitleaks-results-*.sarif  # Uploads all SARIF files matching the pattern
+
+      - name: Send Gitleaks Report to Slack
+        if: failure()  # Executes only if Gitleaks scan fails
+        uses: rtCamp/action-slack-notify@v3
+        with:
+          status: failure
+          text: |
+            Gitleaks scan detected potential leaks in the repository. Check the attached report for details.
+          attachments: gitleaks-results-*.sarif
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   semgrep-full:
     runs-on: ubuntu-latest

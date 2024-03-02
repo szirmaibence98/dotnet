@@ -319,7 +319,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Use Version
-        run: echo "The version is ${{ needs.gitversion.outputs.version }}"
+        run: echo "The version is ${{ needs.gitversion2.outputs.version }}"
 
   release:
     needs: gitversion2
@@ -334,7 +334,7 @@ jobs:
           fi
 
       - name: Example Step
-        run: echo "The version is ${{ needs.gitversion.outputs.version }}"
+        run: echo "The version is ${{ needs.gitversion2.outputs.version }}"
 
 
 
@@ -358,7 +358,7 @@ jobs:
     with:
       image-name: szirmaibence98/testimage
       docker-context: '.'
-      version: ${{ needs.gitversion.outputs.version }}
+      version: 0.1.0
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

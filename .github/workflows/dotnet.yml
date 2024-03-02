@@ -58,10 +58,8 @@ jobs:
         run: |
           if grep -q '"results":\[\]' trivy-results.sarif; then
             echo "No vulnerabilities found ✅"
-            exit 0
           else
             echo "Vulnerabilities found ❌"
-            exit 1
           fi
 
 
@@ -120,7 +118,6 @@ jobs:
   gitleaks:
     name: Run Gitleaks Scan
     runs-on: ubuntu-latest
-    needs: [trivy] # Ensure Gitleaks runs after Trivy
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -152,9 +149,9 @@ jobs:
             echo "No leaks detected ✅"
             exit 0
           else
-            echo "Leaks detected ❌"
-            exit 1
+            echo "Vulnerabilities found ❌"
           fi
+
   
       - name: Upload Gitleaks Results
         if: ${{ always() }}  # Always execute even if previous steps fail

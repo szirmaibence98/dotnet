@@ -105,20 +105,19 @@ jobs:
   
       - name: Summarize Vulnerabilities
         run: |
-          sudo apt-get install jq
-          if [ -f trivy-results.sarif ]; then
-            jq -r '.runs[].results[] | select(.ruleId | test("CVE-")) | "CVE: \(.ruleId) \nPackage: \(.properties.package) \nInstalled Version: \(.properties.installedVersion) \nVulnerability \(.ruleId) \nSeverity: \(.level) \nFixed Version: \(.properties.fixedVersion) \nLink: \(.properties.link)\n"' trivy-results.sarif > summary.txt
-            if [ -s summary.txt ]; then
-              echo "Vulnerabilities found: ❌" >> $GITHUB_STEP_SUMMARY
-              while IFS= read -r line; do
-                echo "\"$line\"" >> $GITHUB_STEP_SUMMARY
-              done < summary.txt
-            else
-              echo "No vulnerabilities detected. ✅" >> $GITHUB_STEP_SUMMARY
-            fi
-          else
+          if [ ! -f trivy-results.sarif ]; then
             echo "Trivy SARIF file not found. ❌" >> $GITHUB_STEP_SUMMARY
+          else
+            sudo apt-get install jq
+            VULNERABILITIES=$(jq '.runs[0].results | if length == 0 then "No vulnerabilities found." else map(.ruleId + ": " + .message.text) | .[] end' trivy-results.sarif)
+            if [ "$VULNERABILITIES" == "No vulnerabilities found." ]; then
+              echo "$VULNERABILITIES" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "Vulnerabilities found:" >> $GITHUB_STEP_SUMMARY
+              echo "$VULNERABILITIES" | sed 's/^/ - /' >> $GITHUB_STEP_SUMMARY
+            fi
           fi
+
 
 
 

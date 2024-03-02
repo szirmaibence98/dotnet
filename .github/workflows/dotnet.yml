@@ -52,15 +52,8 @@ jobs:
         uses: aquasecurity/trivy-action@0.18.0
         with:
           input: szirmaibence98/testimage:0.1.0
-          format: template
-          template: ${{ steps.read-template.outputs.template }}
           output: junit-report.xml
-          scan-type: image
-          scan-ref: .
-          ignore-unfixed: false
-          vuln-type: os,library
-          severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
-          list-all-pkgs: false
+
   
       - name: Save Trivy Scan Results
         uses: actions/upload-artifact@v2

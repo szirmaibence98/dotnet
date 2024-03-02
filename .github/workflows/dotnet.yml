@@ -48,7 +48,7 @@ jobs:
       - name: Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.18.0
         with:
-          input: szirmaibence98/testimage:0.1.0
+          input: docker.io/szirmaibence98/testimage:0.1.0
           format: template
           template: ${{ steps.read-template.outputs.template }}
           output: junit-report.xml

@@ -26,15 +26,13 @@ on:
 
 jobs:
 
-
-  gitleaks2:
-    name: Run Gitleaks Scan
+jobs:
+  security_scan:
+    name: Security Scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Fetches the complete commit history
 
       - name: Setup Gitleaks
         uses: actions/setup-go@v2
@@ -49,7 +47,7 @@ jobs:
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
       - name: Save Gitleaks Results
-        if: ${{ always() }}  # Always execute even if previous steps fail
+        if: ${{ always() }}
         run: |
           mv results.sarif gitleaks-results-$(date +"%Y%m%d-%H%M%S").sarif
           echo "✅ Gitleaks scan completed"
@@ -64,19 +62,11 @@ jobs:
           fi
 
       - name: Upload Gitleaks Results
-        if: ${{ always() }}  # Always execute even if previous steps fail
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: gitleaks-results
-          path: gitleaks-results-*.sarif  # Uploads all SARIF files matching the pattern
-
-  trivy2:
-    name: Run Trivy Vulnerability Scan
-    runs-on: ubuntu-latest
-    needs: gitleaks
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+          path: gitleaks-results-*.sarif
 
       - name: Download Trivy and JUnit Template
         run: |
@@ -108,6 +98,14 @@ jobs:
           else
             echo "Vulnerabilities found ❌"
           fi
+
+      - name: Upload Trivy Results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: trivy-results
+          path: trivy-results.sarif
+
 
 
   trivy:

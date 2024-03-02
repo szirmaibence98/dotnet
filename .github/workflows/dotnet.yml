@@ -25,20 +25,19 @@ on:
         default: false
 
 jobs:
-
-
+  
   security_scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
+  
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-
+  
       - name: Provide Docker Hub credentials
         run: echo "${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
+  
       - name: Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.18.0
         with:
@@ -52,12 +51,13 @@ jobs:
           vuln-type: os,library
           severity: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
           list-all-pkgs: false
-
+  
       - name: Save Trivy Scan Results
         uses: actions/upload-artifact@v2
         with:
           name: trivy-results
           path: junit-report.xml
+
 
 
 

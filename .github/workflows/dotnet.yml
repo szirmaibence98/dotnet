@@ -286,7 +286,7 @@ jobs:
             
 
 
-  gitversion:
+  gitversion2:
     name: 'Determine Version'
     runs-on: ubuntu-latest
     outputs:
@@ -315,14 +315,14 @@ jobs:
           
   # Example of a subsequent job that uses the version
   use_version:
-    needs: gitversion
+    needs: gitversion2
     runs-on: ubuntu-latest
     steps:
       - name: Use Version
         run: echo "The version is ${{ needs.gitversion.outputs.version }}"
 
   release:
-    needs: gitversion
+    needs: gitversion2
     runs-on: ubuntu-latest
     steps:
       - name: Check if release should be created
@@ -336,6 +336,12 @@ jobs:
       - name: Example Step
         run: echo "The version is ${{ needs.gitversion.outputs.version }}"
 
+
+
+
+  gitversion:
+    name: 'GitVersion'
+    uses: szirmaibence98/templates/.github/workflows/gitversion.yml@main
 
     
   build:

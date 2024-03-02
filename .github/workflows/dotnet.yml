@@ -143,21 +143,18 @@ jobs:
             --metrics=off \
             --config="p/default"
   
-      # Save report as pipeline artifact
-      - name: Save Semgrep report as pipeline artifact
-        uses: actions/upload-artifact@v4.3.1
-        with:
-          name: semgrep-report.sarif
-          path: semgrep-report.sarif
-  
-      # Upload SARIF file to GitHub
-      - name: Upload Semgrep SARIF file to GitHub
-        uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: semgrep-report.sarif
-        if: always()
-  
+      - name: Save Semgrep Results
+        if: ${{ always() }}  # Always execute even if previous steps fail
+        run: |
+          mv results.sarif semgrep-results-$(date +"%Y%m%d-%H%M%S").sarif
+          echo "✅ Semgrep scan completed"
 
+      - name: Upload Gitleaks Results
+        if: ${{ always() }}  # Always execute even if previous steps fail
+        uses: actions/upload-artifact@v2
+        with:
+          name: semgrep-results
+          path: semgrep-results-*.sarif  # Uploads all SARIF files matching the pattern
 
 
 

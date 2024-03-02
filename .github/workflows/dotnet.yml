@@ -320,21 +320,6 @@ jobs:
       - name: Use Version
         run: echo "The version is ${{ needs.gitversion.outputs.version }}"
 
-
-
-  write_to_file:
-    needs: gitversion
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download version file
-        uses: actions/download-artifact@v2
-        with:
-          name: version
-          path: /tmp
-
-      - name: Echo version
-        run: cat /tmp/version.txt
-        
   release:
     needs: gitversion
     runs-on: ubuntu-latest
@@ -348,7 +333,9 @@ jobs:
           fi
 
       - name: Example Step
-        run: echo "SemVerV2 value is $GITHUB_ENV "
+        run: echo "The version is ${{ needs.gitversion.outputs.version }}"
+
+
     
   build:
     name: 'Build'

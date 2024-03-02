@@ -25,7 +25,7 @@ on:
         default: false
 
 jobs:
-  
+
   security_scan:
     runs-on: ubuntu-latest
     steps:
@@ -38,12 +38,17 @@ jobs:
       - name: Provide Docker Hub credentials
         run: echo "${{ secrets.DOCKER_USERNAME }}:${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
   
+      - name: Read Trivy template
+        id: read-template
+        run: |
+          echo "::set-output name=template::$(cat /path/to/your/template/junit.tpl)"
+  
       - name: Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.18.0
         with:
           input: szirmaibence98/testimage:0.1.0
           format: template
-          template: @/contrib/junit.tpl
+          template: ${{ steps.read-template.outputs.template }}
           output: junit-report.xml
           scan-type: image
           scan-ref: .
@@ -57,6 +62,7 @@ jobs:
         with:
           name: trivy-results
           path: junit-report.xml
+
 
 
 

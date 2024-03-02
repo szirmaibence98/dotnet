@@ -26,37 +26,37 @@ on:
 
 jobs:
 
-trivy:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v3
-
-    - name: Download Trivy and JUnit Template
-      run: |
-        wget https://github.com/aquasecurity/trivy/releases/download/v0.45.0/trivy_0.45.0_Linux-64bit.tar.gz
-        tar zxvf trivy_0.45.0_Linux-64bit.tar.gz
-        sudo mv trivy /usr/local/bin/
-        wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/junit.tpl -O junit.tpl
-
-    - name: Download Docker image
-      run: docker pull szirmaibence98/testimage:0.1.0
-
-    - name: Run Trivy Vulnerability Scan
-      id: trivy-scan
-      run: |
-        trivy image --severity HIGH,CRITICAL --format template --template "@junit.tpl" -o junit-report.xml szirmaibence98/testimage:0.1.0
-        scan_results=$(cat junit-report.xml)
-        echo "::set-output name=trivy-results::$scan_results"
-
-    - name: Save Trivy Scan Results
-      uses: actions/upload-artifact@v2
-      with:
-        name: trivy-results
-        path: junit-report.xml
-
-    - name: Print Trivy Scan Results
-      run: echo "Trivy scan completed: ${{ steps.trivy-scan.outputs.trivy-results }}"
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+  
+      - name: Download Trivy and JUnit Template
+        run: |
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.45.0/trivy_0.45.0_Linux-64bit.tar.gz
+          tar zxvf trivy_0.45.0_Linux-64bit.tar.gz
+          sudo mv trivy /usr/local/bin/
+          wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/junit.tpl -O junit.tpl
+  
+      - name: Download Docker image
+        run: docker pull szirmaibence98/testimage:0.1.0
+  
+      - name: Run Trivy Vulnerability Scan
+        id: trivy-scan
+        run: |
+          trivy image --severity HIGH,CRITICAL --format template --template "@junit.tpl" -o junit-report.xml szirmaibence98/testimage:0.1.0
+          scan_results=$(cat junit-report.xml)
+          echo "::set-output name=trivy-results::$scan_results"
+  
+      - name: Save Trivy Scan Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: trivy-results
+          path: junit-report.xml
+  
+      - name: Print Trivy Scan Results
+        run: echo "Trivy scan completed: ${{ steps.trivy-scan.outputs.trivy-results }}"
 
 
 

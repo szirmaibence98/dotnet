@@ -169,50 +169,6 @@ jobs:
 
 
 
-  gitleaks3:
-    name: Run Gitleaks Scan
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # Fetches the complete commit history
-  
-      - name: Setup Gitleaks
-        uses: actions/setup-go@v2
-        with:
-          go-version: '1.16'
-  
-      - name: Run Gitleaks
-        id: gitleaks
-        uses: gitleaks/gitleaks-action@v2.3.4
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
-  
-      - name: Save Gitleaks Results
-        if: ${{ always() }}  # Always execute even if previous steps fail
-        run: |
-          mv results.sarif gitleaks-results-$(date +"%Y%m%d-%H%M%S").sarif
-          echo "✅ Gitleaks scan completed"
-  
-      - name: Check Gitleaks Results
-        if: ${{ always() }}
-        run: |
-          if [ ! -s "results.sarif" ]; then
-            echo "No leaks detected ✅"
-            exit 0
-          else
-            echo "Vulnerabilities found ❌"
-          fi
-
-  
-      - name: Upload Gitleaks Results
-        if: ${{ always() }}  # Always execute even if previous steps fail
-        uses: actions/upload-artifact@v2
-        with:
-          name: gitleaks-results
-          path: gitleaks-results-*.sarif  # Uploads all SARIF files matching the pattern
 
 
 #      - name: Send Gitleaks Report to Slack

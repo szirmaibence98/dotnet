@@ -26,8 +26,7 @@ on:
 
 jobs:
 
-  
-  security_scan:
+  trivy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -44,15 +43,20 @@ jobs:
         run: docker pull szirmaibence98/testimage:0.1.0
   
       - name: Run Trivy Vulnerability Scan
+        id: trivy-scan
         run: |
           trivy image --severity HIGH,CRITICAL --format template --template "@junit.tpl" -o junit-report.xml szirmaibence98/testimage:0.1.0
+          scan_results=$(cat junit-report.xml)
+          echo "::set-output name=trivy-results::$scan_results"
   
       - name: Save Trivy Scan Results
         uses: actions/upload-artifact@v2
         with:
           name: trivy-results
           path: junit-report.xml
-
+  
+      - name: Print Trivy Scan Results
+        run: echo "${{ steps.trivy-scan.outputs.trivy-results }}"
 
 
 

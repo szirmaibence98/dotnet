@@ -286,7 +286,6 @@ jobs:
             
 
 
-  
   gitversion:
     name: 'Determine Version'
     runs-on: ubuntu-latest
@@ -309,15 +308,9 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0
         with:
           useConfigFile: true
- 
-      - name: Save version to file
-        run: echo "${{ steps.determine_version.outputs.MajorMinorPatch }}" > /tmp/version.txt
 
-      - name: Upload version artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: version
-          path: /tmp/version.txt
+
+
           
   # Example of a subsequent job that uses the version
   use_version:
@@ -326,6 +319,8 @@ jobs:
     steps:
       - name: Use Version
         run: echo "The version is ${{ needs.gitversion.outputs.version }}"
+
+
 
   write_to_file:
     needs: gitversion

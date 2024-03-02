@@ -28,6 +28,10 @@ jobs:
 
   semgrep-full:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read    
     container:
       image: returntocorp/semgrep
     steps:

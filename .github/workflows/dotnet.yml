@@ -64,12 +64,12 @@ jobs:
             cat results.sarif
           fi
 
-      - name: Upload Gitleaks Results
-        if: ${{ always() }}  # Always execute even if previous steps fail
-        uses: actions/upload-artifact@v2
-        with:
-          name: gitleaks-results
-          path: gitleaks-results-*.sarif  # Uploads all SARIF files matching the pattern
+#      - name: Upload Gitleaks Results
+#        if: ${{ always() }}  # Always execute even if previous steps fail
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: gitleaks-results
+#          path: gitleaks-results-*.sarif  # Uploads all SARIF files matching the pattern
 
 
 

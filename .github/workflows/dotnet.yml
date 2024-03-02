@@ -358,7 +358,7 @@ jobs:
     with:
       image-name: szirmaibence98/testimage
       docker-context: '.'
-      version: 0.1.0
+      version: ${{ needs.gitversion.outputs.version }}
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

@@ -36,14 +36,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Snyk CLI to check for security issues
-        uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-
-      - name: Snyk Code test
-        run: snyk code test --sarif > snyk-code.sarif # || true
+      - name: Snyk
+        # You may pin to the exact commit or the version.
+        # uses: snyk/actions@b98d498629f1c368650224d6d212bf7dfa89e4bf
+        uses: snyk/actions@0.4.0
+        with:
+          # Which Snyk command to run, defaults to test
+          command: # optional, default is test
+          # Additional arguments to pass to Snyk
+          args: # optional
+          # Output a snyk.json file with results if running the test command
+          json: # optional
+          
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v2
@@ -57,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v
         with:
           fetch-depth: 0  # Fetches the complete commit history
 

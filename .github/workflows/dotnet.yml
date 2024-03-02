@@ -103,21 +103,23 @@ jobs:
           name: trivy-results
           path: trivy-results.sarif
   
-      - name: Summarize Gitleaks Findings
-        if: ${{ always() }}
+      - name: Summarize Vulnerabilities
         run: |
-          if [ ! -s "results.sarif" ]; then
-            echo "No leaks detected. ✅" >> $GITHUB_STEP_SUMMARY
-          else
-            sudo apt-get install jq -y
-            LEAKS=$(jq '.runs[0].results | map(.ruleId + ": " + .message.text) | .[]' results.sarif | sed 's/^/ - /')
-            if [ -z "$LEAKS" ]; then
-              echo "No leaks detected. ✅" >> $GITHUB_STEP_SUMMARY
+          sudo apt-get install jq
+          if [ -f trivy-results.sarif ]; then
+            VULN_COUNT=$(jq '.runs[].tool.driver.rules[] | select(.id | test("CVE-")) | .id' trivy-results.sarif | wc -l)
+            if [ "$VULN_COUNT" -gt 0 ]; then
+              echo "Vulnerabilities found: ❌" >> $GITHUB_STEP_SUMMARY
+              jq -r '.runs[].results[] | select(.ruleId | test("CVE-")) | "\(.ruleId): \(.message.text)"' trivy-results.sarif | while read -r line; do
+                echo "- $line" >> $GITHUB_STEP_SUMMARY
+              done
             else
-              echo "Leaks found: ❌" >> $GITHUB_STEP_SUMMARY
-              echo "$LEAKS" >> $GITHUB_STEP_SUMMARY
+              echo "No vulnerabilities detected. ✅" >> $GITHUB_STEP_SUMMARY
             fi
+          else
+            echo "Trivy SARIF file not found. ❌" >> $GITHUB_STEP_SUMMARY
           fi
+
 
 
 

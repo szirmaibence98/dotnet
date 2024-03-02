@@ -48,11 +48,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
 
-#      - name: Save Gitleaks Results
-#        if: ${{ always() }}  # Always execute even if previous steps fail
-#        run: |
-#          mv results.sarif gitleaks-results-$(date +"%Y%m%d-%H%M%S").sarif
-#          echo "✅ Gitleaks scan completed"
+      - name: Save Gitleaks Results
+        if: ${{ always() }}  # Always execute even if previous steps fail
+        run: |
+          mv results.sarif gitleaks-results-$(date +"%Y%m%d-%H%M%S").sarif
+          echo "✅ Gitleaks scan completed"
 
   
       - name: Summarize Gitleaks Findings
@@ -265,14 +265,15 @@ jobs:
           sarif_file: report.sarif
         if: always()
   
-      # Summarize Semgrep Findings
+  
+      # Install jq and Summarize Semgrep Findings
       - name: Summarize Semgrep Findings
         if: always()
         run: |
+          sudo apt-get update && sudo apt-get install jq -y
           if [ ! -f report.sarif ]; then
             echo "Semgrep SARIF file not found. ❌" >> $GITHUB_STEP_SUMMARY
           else
-            sudo apt-get install jq -y
             FINDINGS=$(jq '.runs[0].results | if length == 0 then "No issues found." else map(.ruleId + ": " + .message.text) | .[] end' report.sarif)
             if [ "$FINDINGS" == "No issues found." ]; then
               echo "$FINDINGS" >> $GITHUB_STEP_SUMMARY

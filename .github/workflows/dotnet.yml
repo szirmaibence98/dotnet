@@ -46,45 +46,11 @@ jobs:
 
       # Upload SARIF file generated in previous step
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: semgrep.sarif
         if: always()
 
-  semgrep-full:
-      runs-on: ubuntu-latest
-      container:
-        image: returntocorp/semgrep
-
-      steps:
-
-        # step 1
-        - name: Checkout Repository
-          uses: actions/checkout@v4.1.1
-          with:
-            fetch-depth: 0
-
-        # step 2
-        - name: full scan
-          run: |
-            semgrep \
-              --sarif --output report.sarif \
-              --metrics=off \
-              --config="p/default"
-
-        # step 3
-        
-        - name: save report as pipeline artifact
-          uses: actions/upload-artifact@v4.3.1
-          with:
-            name: report.sarif
-            path: report.sarif
-            
-        # step 4
-        - name: Download report
-          uses: actions/download-artifact@v4.1.4
-          with: 
-            name: report.sarif
             
 
 

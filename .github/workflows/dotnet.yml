@@ -58,9 +58,12 @@ jobs:
         run: |
           if grep -q '"results":\[\]' trivy-results.sarif; then
             echo "No vulnerabilities found ✅"
+            echo "::set-env name=TRIVY_RESULT::No vulnerabilities found ✅"
           else
             echo "Vulnerabilities found ❌"
+            echo "::set-env name=TRIVY_RESULT::Vulnerabilities found ❌"
           fi
+
 
 
 

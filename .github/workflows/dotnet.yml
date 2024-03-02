@@ -309,6 +309,8 @@ jobs:
         with:
           useConfigFile: true
 
+      - name: Print Version
+        run: echo "Version: ${{ steps.determine_version.outputs.MajorMinorPatch }}"
 
 
           

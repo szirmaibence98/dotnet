@@ -41,6 +41,9 @@ jobs:
         id: read-template
         run: |
           echo "::set-output name=template::$(cat /path/to/your/template/junit.tpl)"
+          
+      - name: Download Docker image
+        run: docker pull szirmaibence98/testimage:0.1.0
   
       - name: Aqua Security Trivy
         uses: aquasecurity/trivy-action@0.18.0

@@ -25,7 +25,7 @@ on:
         default: false
 
 jobs:
-
+  
   semgrep-full:
     runs-on: ubuntu-latest
     permissions:
@@ -61,25 +61,13 @@ jobs:
           name: report.sarif
           path: report.sarif
   
-      # Download report artifact
-      - name: Download report
-        uses: actions/download-artifact@v4.1.4
-        with: 
-          name: report.sarif
-  
-      # Extract SARIF file from the ZIP archive
-      - name: Extract SARIF file
-        run: |
-          unzip $GITHUB_WORKSPACE/report.zip
-          mv $GITHUB_WORKSPACE/report.sarif $GITHUB_WORKSPACE/report.sarif
-        working-directory: ${{ github.workspace }}
-  
       # Upload SARIF file to GitHub
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: report.sarif
         if: always()
+
 
 
 

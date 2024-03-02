@@ -62,7 +62,14 @@ jobs:
           uses: actions/download-artifact@v4.1.4
           with: 
             name: report.sarif
+            
+        - name: Extract SARIF file
+          run: |
+            unzip report.zip
+            mv report.sarif $GITHUB_WORKSPACE/report.sarif
+          working-directory: $GITHUB_WORKSPACE
 
+  
   gitversion:
     name: 'Determine Version'
     runs-on: ubuntu-latest

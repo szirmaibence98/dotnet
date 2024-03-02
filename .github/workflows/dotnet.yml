@@ -26,27 +26,28 @@ on:
 
 jobs:
 
-  trivy:
+  trivy_scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      # Run Trivy scan against Docker container
-      - name: Run Trivy Scan
+      - name: Install Trivy
         run: |
-          docker run --rm -v $PWD:/workdir aquasec/trivy szirmaibence98/testimage:0.1.0 | tee trivy-results.txt
+          docker pull aquasec/trivy:latest
+          docker run --rm -v /usr/local/bin:/target aquasec/trivy:latest install --only-update
         continue-on-error: true
 
+      - name: Run Trivy Scan
+        run: |
+          docker run --rm -v $PWD:/workdir aquasec/trivy:latest --severity HIGH,CRITICAL --format template --template "@junit.tpl" -o junit-report.xml szirmaibence98/testimage:0.1.0
+        continue-on-error: true
 
-
-      # Save Trivy scan results as pipeline artifact
-      - name: Save Trivy Scan Results
-        if: ${{ always() }}
+      - name: Publish Trivy Scan Results
         uses: actions/upload-artifact@v2
         with:
           name: trivy-results
-          path: trivy-results.txt
+          path: junit-report.xml
 
 
 

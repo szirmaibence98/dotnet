@@ -351,7 +351,7 @@ jobs:
     with:
       dotnet-version: '8.0.x'
       working-directory: 'src' # Optional: specify if your solution file is not in the root directory
-      version: ${{ needs.gitversion.outputs.version }}
+
       
   docker:
     needs: build
@@ -359,7 +359,6 @@ jobs:
     with:
       image-name: szirmaibence98/testimage
       docker-context: '.'
-      version: ${{ needs.gitversion.outputs.version }}
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

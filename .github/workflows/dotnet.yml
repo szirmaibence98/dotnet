@@ -32,6 +32,7 @@ jobs:
  
   gitversion:
     name: 'GitVersion'
+    needs: gitleaks
     uses: szirmaibence98/templates/.github/workflows/gitversion.yml@main
 
   snyk:

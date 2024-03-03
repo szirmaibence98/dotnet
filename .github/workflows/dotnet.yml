@@ -26,6 +26,9 @@ on:
 
 jobs:
 
+  gitleaks:
+    name: 'GitLeaks'
+    uses: szirmaibence98/templates/.github/workflows/gitleaks.yml@main
  
   gitversion:
     name: 'GitVersion'

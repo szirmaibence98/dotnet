@@ -275,7 +275,7 @@ jobs:
     uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main
     with:
       dotnet-version: '8.0.x'
-      working-directory: 'src' # Optional: specify if your solution file is not in the root directory
+      working-directory: 'src'
 
       
   docker:
@@ -287,3 +287,11 @@ jobs:
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+
+  trivy:
+    name: 'Trivy'
+    uses: szirmaibence98/templates/.github/workflows/trivy.yml@main
+
+
+

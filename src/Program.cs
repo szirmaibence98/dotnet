@@ -12,3 +12,4 @@ class Program
         Console.WriteLine($"Password: {password}");
     }
 }
+

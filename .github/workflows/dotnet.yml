@@ -286,43 +286,12 @@ jobs:
             
 
 
-  gitversion2:
-    name: 'Determine Version'
-    runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.determine_version.outputs.MajorMinorPatch }}
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4.1.1
-        with:
-          fetch-depth: 0
-          
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0
-        with:
-          versionSpec: '5.x'     
-          preferLatestVersion: true
-
-      - name: Determine Version
-        id: determine_version
-        uses: gittools/actions/gitversion/execute@v0
-        with:
-          useConfigFile: true
 
 
 
-
-          
-  # Example of a subsequent job that uses the version
-  use_version:
-    needs: gitversion2
-    runs-on: ubuntu-latest
-    steps:
-      - name: Use Version
-        run: echo "The version is ${{ needs.gitversion2.outputs.version }}"
 
   release:
-    needs: gitversion2
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Check if release should be created
@@ -334,7 +303,7 @@ jobs:
           fi
 
       - name: Example Step
-        run: echo "The version is ${{ needs.gitversion2.outputs.version }}"
+        run: echo "The version is valami"
 
 
 

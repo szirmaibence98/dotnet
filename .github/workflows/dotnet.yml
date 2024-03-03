@@ -130,9 +130,12 @@ jobs:
     name: 'Semgrep'
     needs: gitversion
     uses: szirmaibence98/templates/.github/workflows/semgrep.yml@main
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
       
   docker:
-    needs: [build, snyk]
+    needs: [build, snyk, semgrep]
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
     with:
       image-name: szirmaibence98/testimage

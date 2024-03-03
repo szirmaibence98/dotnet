@@ -112,15 +112,6 @@ jobs:
     name: 'GitVersion'
     uses: szirmaibence98/templates/.github/workflows/gitversion.yml@main
 
-    
-  build:
-    name: 'Build'
-    needs: gitversion
-    uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main
-    with:
-      dotnet-version: '8.0.x'
-      working-directory: 'src'
-
   snyk:
     name: 'Snyk'
     needs: gitversion
@@ -132,11 +123,17 @@ jobs:
     name: 'Semgrep'
     needs: gitversion
     uses: szirmaibence98/templates/.github/workflows/semgrep.yml@main
-
-
+    
+  build:
+    name: 'Build'
+    needs:  [gitversion, snyk, semgrep]
+    uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main
+    with:
+      dotnet-version: '8.0.x'
+      working-directory: 'src'
       
   docker:
-    needs: [build, snyk, semgrep]
+    needs: build
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
     with:
       image-name: szirmaibence98/testimage
@@ -144,7 +141,6 @@ jobs:
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
 
   trivy:
     name: 'Trivy'

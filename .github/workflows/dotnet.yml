@@ -291,6 +291,7 @@ jobs:
 
   trivy:
     name: 'Trivy'
+    needs: docker
     uses: szirmaibence98/templates/.github/workflows/trivy.yml@main
 
 

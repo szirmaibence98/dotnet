@@ -109,59 +109,6 @@ jobs:
 
 
   
-  snyk:
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-  
-      - name: Set up Snyk CLI to check for security issues
-        uses: snyk/actions/setup@806182742461562b67788a64410098c9d9b96adb
-        with:
-          language: dotnet
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  
-      - name: Authenticate Snyk
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk auth $SNYK_TOKEN
-  
-      - name: Snyk Code test
-        run: snyk code test --sarif > snyk-code.sarif || true
-  
-      - name: Save Snyk Results
-        if: ${{ always() }}
-        run: |
-          mv snyk-code.sarif snyk-results-$(date +"%Y%m%d-%H%M%S").sarif
-          echo "✅ Snyk scan completed"
-  
-      - name: Upload Snyk Results
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v2
-        with:
-          name: snyk-results
-          path: snyk-results-*.sarif
-
-      - name: Summarize Snyk Findings
-        if: ${{ always() }}
-        run: |
-          sudo apt-get install jq -y
-          SARIF_FILE=$(ls snyk-results-*.sarif)
-          if [ ! -f "$SARIF_FILE" ]; then
-            echo "Snyk SARIF file not found. ❌" >> $GITHUB_STEP_SUMMARY
-          else
-            VULNERABILITIES=$(jq '.runs[0].results | if length == 0 then "No vulnerabilities found." else map(.ruleId + ": " + .message.text) | .[] end' $SARIF_FILE)
-            if [ "$VULNERABILITIES" == "No vulnerabilities found." ]; then
-              echo "$VULNERABILITIES" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "Vulnerabilities found:" >> $GITHUB_STEP_SUMMARY
-              echo "$VULNERABILITIES" | sed 's/^/ - /' >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
 
 
 
@@ -277,9 +224,13 @@ jobs:
       dotnet-version: '8.0.x'
       working-directory: 'src'
 
+  snyk:
+    name: 'Snyk'
+    needs: gitversion
+    uses: szirmaibence98/templates/.github/workflows/trivy.yml@main
       
   docker:
-    needs: build
+    needs: [build, snyk]
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
     with:
       image-name: szirmaibence98/testimage

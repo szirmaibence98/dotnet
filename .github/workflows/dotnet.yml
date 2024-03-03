@@ -92,50 +92,6 @@ jobs:
 
 
 
-  
-  trivy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-  
-      - name: Download Trivy and JUnit Template
-        run: |
-          wget https://github.com/aquasecurity/trivy/releases/download/v0.45.0/trivy_0.45.0_Linux-64bit.tar.gz
-          tar zxvf trivy_0.45.0_Linux-64bit.tar.gz
-          sudo mv trivy /usr/local/bin/
-          wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/junit.tpl -O junit.tpl
-  
-      - name: Download Docker image
-        run: docker pull szirmaibence98/testimage:0.1.0
-  
-      - name: Run Trivy Vulnerability Scan
-        id: trivy-scan
-        run: |
-          trivy image --severity HIGH,CRITICAL --format sarif -o trivy-results.sarif szirmaibence98/testimage:0.1.0
-          echo "✅ Trivy scan completed"
-  
-      - name: Save Trivy Scan Results
-        uses: actions/upload-artifact@v2
-        with:
-          name: trivy-results
-          path: trivy-results.sarif
-  
-      - name: Summarize Vulnerabilities
-        run: |
-          if [ ! -f trivy-results.sarif ]; then
-            echo "Trivy SARIF file not found. ❌" >> $GITHUB_STEP_SUMMARY
-          else
-            sudo apt-get install jq
-            VULNERABILITIES=$(jq '.runs[0].results | if length == 0 then "No vulnerabilities found." else map(.ruleId + ": " + .message.text) | .[] end' trivy-results.sarif)
-            if [ "$VULNERABILITIES" == "No vulnerabilities found." ]; then
-              echo "$VULNERABILITIES" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "Vulnerabilities found:" >> $GITHUB_STEP_SUMMARY
-              echo "$VULNERABILITIES" | sed 's/^/ - /' >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-
 
 
 

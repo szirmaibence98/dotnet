@@ -74,4 +74,9 @@ jobs:
     uses: szirmaibence98/templates/.github/workflows/trivy.yml@main
 
 
-
+  helm:
+#    needs: build
+#    uses: szirmaibence98/templates/.github/workflows/docker.yml@main
+    secrets:
+      ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+      ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}

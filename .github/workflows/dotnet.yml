@@ -76,7 +76,7 @@ jobs:
 
   helm:
 #    needs: build
-#    uses: szirmaibence98/templates/.github/workflows/docker.yml@main
+    uses: szirmaibence98/templates/.github/workflows/helm.yml@main
     secrets:
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}

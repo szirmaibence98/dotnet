@@ -75,7 +75,7 @@ jobs:
 
 
   helm:
-#    needs: build
+    needs: trivy
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main
     secrets:
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}

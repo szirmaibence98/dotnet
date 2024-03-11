@@ -5,7 +5,7 @@ branches:
     tag: ''
     increment: main
   develop: 
-    regex: main
+    regex: develop
     tag: ''
     increment: patch
     prevent-increment-of-merged-branch-version: true

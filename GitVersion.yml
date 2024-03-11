@@ -1,20 +1,18 @@
 mode: Mainline
 branches:
   main:
-    regex: ^main$
+    regex: main
     tag: ''
     increment: Minor
   develop:
-    regex: ^develop$
+    regex: develop
     tag: ''
     increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: true
   feature:
-    regex: ^features?/[a-zA-Z0-9-]+$
+    regex: feature?[/-]
     tag: useBranchName
     increment: None
   hotfix:
-    regex: ^hotfixes?/[a-zA-Z0-9-]+$
+    regex: hotfix?[/-]
     tag: beta
     increment: Patch

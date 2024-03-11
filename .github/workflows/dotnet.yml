@@ -1,8 +1,19 @@
 name: 'dotNet'
 on:
   push:
+    branches:
+      - main
+      - 'feature/*'
+      - 'hotfix/*'
+
     tags:
       - '*'
+
+  pull_request:
+    branches:
+      - main
+      - 'feature/*'
+      - 'hotfix/*'
 
   workflow_dispatch:
     inputs:

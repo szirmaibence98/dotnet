@@ -2,16 +2,8 @@ mode: Mainline
 branches: 
   master: 
     regex: main
-    tag: ''
-    increment: minor
-  develop:
-    regex: develop
-    tag: alpha
-    increment: Minor
-  release:
-    regex: releases?[/-]
     tag: beta
-    increment: Patch
+    increment: patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: true
   feature:

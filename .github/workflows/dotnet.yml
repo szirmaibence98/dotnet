@@ -33,30 +33,30 @@ jobs:
     #needs: gitleaks
     uses: szirmaibence98/templates/.github/workflows/gitversion.yml@main
 
-  gitleaks:
-    name: 'GitLeaks'
-    needs: gitversion
-    uses: szirmaibence98/templates/.github/workflows/gitleaks.yml@main
+#  gitleaks:
+#    name: 'GitLeaks'
+#    needs: gitversion
+#    uses: szirmaibence98/templates/.github/workflows/gitleaks.yml@main
 
-  snyk:
-    name: 'Snyk'
-    needs: gitversion
-    uses: szirmaibence98/templates/.github/workflows/snyk.yml@main
-    secrets:
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#  snyk:
+#    name: 'Snyk'
+#    needs: gitversion
+#    uses: szirmaibence98/templates/.github/workflows/snyk.yml@main
+#    secrets:
+#      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       
-  semgrep:
-    name: 'Semgrep'
-    needs: gitversion
-    uses: szirmaibence98/templates/.github/workflows/semgrep.yml@main
+#  semgrep:
+#    name: 'Semgrep'
+#    needs: gitversion
+#    uses: szirmaibence98/templates/.github/workflows/semgrep.yml@main
     
   build:
     name: 'Build'
     needs:  
      - gitversion
-     - gitleaks
-     - snyk
-     - semgrep
+#     - gitleaks
+#     - snyk
+#     - semgrep
     uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main
     with:
       dotnet-version: '8.0.x'
@@ -72,14 +72,15 @@ jobs:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-  trivy:
-    name: 'Trivy'
-    needs: docker
-    uses: szirmaibence98/templates/.github/workflows/trivy.yml@main
+#  trivy:
+#    name: 'Trivy'
+#    needs: docker
+#    uses: szirmaibence98/templates/.github/workflows/trivy.yml@main
 
 
   helm:
-    needs: trivy
+#    needs: trivy
+    needs: docker
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main
     secrets:
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}

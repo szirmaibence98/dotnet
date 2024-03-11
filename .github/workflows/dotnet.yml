@@ -61,7 +61,7 @@ jobs:
     with:
       dotnet-version: '8.0.x'
       working-directory: 'src'
-      release: ${{ github.event.inputs.release }}
+      release: ${{ github.event.inputs.release == 'true' }}
       
   docker:
     needs: build

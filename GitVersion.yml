@@ -3,6 +3,12 @@ branches:
   master: 
     regex: main
     tag: ''
+    increment: main
+    prevent-increment-of-merged-branch-version: true
+    track-merge-target: true
+  develop: 
+    regex: main
+    tag: ''
     increment: patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: true

@@ -23,17 +23,24 @@ on:
         description: 'Create release'
         required: true
         default: false
+      release:
+        description: 'Flag to indicate if this run should create a release tag'
+        required: false
+        default: 'false'
+
 
 jobs:
 
-  gitleaks:
-    name: 'GitLeaks'
-    uses: szirmaibence98/templates/.github/workflows/gitleaks.yml@main
- 
+    
   gitversion:
     name: 'GitVersion'
-    needs: gitleaks
+    #needs: gitleaks
     uses: szirmaibence98/templates/.github/workflows/gitversion.yml@main
+
+  gitleaks:
+    name: 'GitLeaks'
+    needs: gitversion
+    uses: szirmaibence98/templates/.github/workflows/gitleaks.yml@main
 
   snyk:
     name: 'Snyk'

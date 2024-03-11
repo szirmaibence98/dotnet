@@ -5,7 +5,8 @@ on:
       - main
       - 'feature/*'
       - 'hotfix/*'
-
+    paths:
+      - 'src/**'
     tags:
       - '*'
 
@@ -14,7 +15,9 @@ on:
       - main
       - 'feature/*'
       - 'hotfix/*'
-
+    paths:
+      - 'src/**'
+      
   workflow_dispatch:
     inputs:
       release:

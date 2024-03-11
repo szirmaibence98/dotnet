@@ -2,7 +2,7 @@ mode: Mainline
 branches: 
   master: 
     regex: main
-    tag: beta
+    tag: ''
     increment: patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: true

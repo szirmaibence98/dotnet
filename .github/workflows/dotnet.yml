@@ -5,10 +5,10 @@ on:
       - main
       - 'feature/*'
       - 'hotfix/*'
-    tags:
-      - '*.*.*'
     paths:
       - 'src/**'
+    tags:
+      - '*.*.*' 
   pull_request:
     branches:
       - main

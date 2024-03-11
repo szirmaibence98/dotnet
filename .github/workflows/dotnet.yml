@@ -69,7 +69,7 @@ jobs:
     with:
       image-name: szirmaibence98/testimage
       docker-context: '.'
-      release: ${{ github.event.inputs.release }}
+      release: ${{ github.event.inputs.release == 'true' }}
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -85,7 +85,7 @@ jobs:
     needs: docker
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main
     with:
-      release: ${{ github.event.inputs.release }}
+      release: ${{ github.event.inputs.release == 'true' }}
     secrets:
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}

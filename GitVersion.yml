@@ -3,7 +3,7 @@ branches:
   main:
     regex: ^main$
     tag: ''
-    increment: Patch
+    increment: Minor
   develop:
     regex: ^develop$
     tag: ''

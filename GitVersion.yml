@@ -4,7 +4,7 @@ branches:
     regex: ^main$
     mode: ContinuousDelivery
     tag: ''
-    increment: Minor
+    increment: Patch
     prevent-increment-of-merged-branch-version: false
     track-merge-target: false
     tracks-release-branches: false
@@ -12,16 +12,16 @@ branches:
     source-branches: ['feature', 'hotfix']
   feature:
     regex: ^features?[/-]
-    mode: ContinuousDeployment
+    mode: ContinuousDelivery
     tag: 'feature'
-    increment: Inherit
-    prevent-increment-of-merged-branch-version: true
+    increment: Minor
+    prevent-increment-of-merged-branch-version: false
     track-merge-target: false
   hotfix:
     regex: ^hotfix[/-]
     mode: ContinuousDelivery
     tag: 'hotfix'
-    increment: Patch
+    increment: Minor
 ignore:
   sha: []
 merge-message-formats: {}

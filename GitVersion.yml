@@ -8,8 +8,6 @@ branches:
     regex: ^develop$
     tag: ''
     increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: true
   feature:
     regex: ^features?/[a-zA-Z0-9-]+$
     tag: useBranchName

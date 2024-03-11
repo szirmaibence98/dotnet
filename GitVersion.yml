@@ -9,10 +9,10 @@ branches:
     tag: ''
     increment: Patch
   feature:
-    regex: ^features?/[a-zA-Z0-9-]+$
+    regex: feature?[/-]
     tag: useBranchName
     increment: None
   hotfix:
-    regex: ^hotfixes?/[a-zA-Z0-9-]+$
+    regex: hotfix?[/-]
     tag: beta
     increment: Patch

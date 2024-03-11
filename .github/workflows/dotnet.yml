@@ -61,6 +61,7 @@ jobs:
     with:
       dotnet-version: '8.0.x'
       working-directory: 'src'
+      release: ${{ github.event.inputs.release }}
       
   docker:
     needs: build
@@ -68,6 +69,7 @@ jobs:
     with:
       image-name: szirmaibence98/testimage
       docker-context: '.'
+      release: ${{ github.event.inputs.release }}
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
@@ -82,6 +84,8 @@ jobs:
 #    needs: trivy
     needs: docker
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main
+    with:
+      release: ${{ github.event.inputs.release }}
     secrets:
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}

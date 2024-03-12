@@ -46,6 +46,8 @@ jobs:
     name: 'Semgrep'
     needs: gitversion
     uses: szirmaibence98/templates/.github/workflows/semgrep.yml@main
+    with:
+      release: ${{ github.event.inputs.release == 'true' }}
     
   build:
     name: 'Build'

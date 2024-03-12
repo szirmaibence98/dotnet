@@ -1,1 +1,107 @@
-a
+name: 'dotNet'
+on:
+  push:
+    branches:
+      - main
+      - 'feature/*'
+      - 'hotfix/*'
+    paths:
+      - 'src/**'
+    tags:
+      - '*'
+
+  pull_request:
+    branches:
+      - main
+      - 'feature/*'
+      - 'hotfix/*'
+    paths:
+      - 'src/**'
+      
+  workflow_dispatch:
+    inputs:
+#      release:
+#        description: 'Create Release'
+#        required: false
+#        default: 'false'
+      feature:
+        description: 'Deploy Feature'
+        required: false
+        default: 'false'
+
+jobs:
+    
+  gitversion:
+    name: 'GitVersion'
+    uses: szirmaibence98/templates/.github/workflows/gitversion.yml@main
+
+
+
+
+  deploy-to-dev:
+    name: 'Deploy to Development'
+#    needs: helm
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
+    environment: 
+      name: dev
+    steps:
+      - name: Simulate Deployment to Development
+        run: echo "Deploying to Development Environment"
+
+  deploy-to-staging:
+    name: 'Deploy to Staging'
+    needs: deploy-to-dev
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') }}
+    environment: 
+      name: staging
+    steps:
+      - name: Simulate Deployment to Staging
+        run: echo "Deploying to Staging Environment"
+
+  deploy-to-prod:
+    name: 'Deploy to Prod'
+    needs: deploy-to-staging
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') }}
+    environment: 
+      name: prod
+    steps:
+      - name: Simulate Deployment to Staging
+        run: echo "Deploying to Staging Environment"
+
+
+
+
+  create-tag-after-prod:
+    name: 'Create Tag After Prod'
+    needs: deploy-to-prod
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.1
+      
+      - name: Download version file
+        uses: actions/download-artifact@v4.1.4
+        with:
+          name: version
+          path: /tmp
+      
+      - name: Read version from file
+        id: read_version
+        run: echo "VERSION=$(cat /tmp/version.txt)" >> $GITHUB_ENV
+      
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      
+      - name: Create and push tag based on GitVersion
+        run: |
+          VERSION=${{ env.VERSION }}
+          git tag $VERSION
+          git push origin $VERSION
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

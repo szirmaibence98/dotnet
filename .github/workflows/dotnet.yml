@@ -91,3 +91,24 @@ jobs:
     secrets:
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+
+
+
+  deploy-to-dev:
+    name: 'Deploy to Development'
+    needs: helm
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
+    steps:
+      - name: Simulate Deployment to Development
+        run: echo "Deploying to Development Environment"
+
+  deploy-to-staging:
+    name: 'Deploy to Staging'
+    needs: deploy-to-dev
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
+    steps:
+      - name: Simulate Deployment to Staging
+        run: echo "Deploying to Staging Environment"
+

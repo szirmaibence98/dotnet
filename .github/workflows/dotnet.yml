@@ -79,7 +79,6 @@ jobs:
 
   helm:
     needs: trivy
-    needs: docker
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main
     if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
     with:

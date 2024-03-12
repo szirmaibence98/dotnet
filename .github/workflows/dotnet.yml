@@ -70,7 +70,7 @@ jobs:
   docker:
     needs: build
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
-    if: ${{ github.ref == 'refs/heads/feature/*' && github.event.inputs.feature == 'true' }}
+    if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
     with:
       image-name: szirmaibence98/testimage
       docker-context: '.'
@@ -89,7 +89,7 @@ jobs:
 #    needs: trivy
     needs: docker
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main
-    if: ${{ github.ref == 'refs/heads/feature/*' && github.event.inputs.feature == 'true' }}
+    if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
     with:
       release: ${{ github.event.inputs.release == 'true' }}
     secrets:

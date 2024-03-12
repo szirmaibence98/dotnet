@@ -1,4 +1,4 @@
-name: 'CD'
+name: 'Release'
 on:
   push:
     branches:
@@ -31,11 +31,6 @@ on:
 
 jobs:
     
-  gitversion:
-    name: 'GitVersion'
-    uses: szirmaibence98/templates/.github/workflows/gitversion.yml@main
-
-
 
 
   deploy-to-dev:

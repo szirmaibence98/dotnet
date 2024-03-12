@@ -33,7 +33,6 @@ jobs:
     
   gitversion:
     name: 'GitVersion'
-    #needs: gitleaks
     uses: szirmaibence98/templates/.github/workflows/gitversion.yml@main
 
   snyk:
@@ -52,8 +51,6 @@ jobs:
     name: 'Build'
     needs:  
      - gitversion
-     - snyk
-     - semgrep
     uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main
     with:
       dotnet-version: '8.0.x'
@@ -61,7 +58,10 @@ jobs:
       release: ${{ github.event.inputs.release == 'true' }}
       
   docker:
-    needs: build
+    needs: 
+     - build
+     - snyk
+     - semgrep
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
     if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
     with:

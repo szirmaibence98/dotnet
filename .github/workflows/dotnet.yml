@@ -21,10 +21,13 @@ on:
   workflow_dispatch:
     inputs:
       release:
-        description: 'Create release'
+        description: 'Create Release'
         required: false
         default: 'false'
-
+      feature:
+        description: 'Deploy Feature'
+        required: false
+        default: 'false'
 
 jobs:
 
@@ -67,6 +70,7 @@ jobs:
   docker:
     needs: build
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
+    if: ${{ github.ref == 'refs/heads/feature/*' && github.event.inputs.feature == 'true' }}
     with:
       image-name: szirmaibence98/testimage
       docker-context: '.'
@@ -85,6 +89,7 @@ jobs:
 #    needs: trivy
     needs: docker
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main
+    if: ${{ github.ref == 'refs/heads/feature/*' && github.event.inputs.feature == 'true' }}
     with:
       release: ${{ github.event.inputs.release == 'true' }}
     secrets:

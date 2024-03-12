@@ -126,3 +126,38 @@ jobs:
     steps:
       - name: Simulate Deployment to Staging
         run: echo "Deploying to Staging Environment"
+
+
+
+
+  create-tag-after-prod:
+    name: 'Create Tag After Prod'
+    needs: deploy-to-prod
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Download version artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: version
+          path: /tmp
+      
+      - name: Read version from file
+        id: read_version
+        run: echo "VERSION=$(cat /tmp/version.txt)" >> $GITHUB_ENV
+      
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      
+      - name: Create and push tag based on GitVersion
+        run: |
+          VERSION=${{ env.VERSION }}
+          git tag $VERSION
+          git push origin $VERSION
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

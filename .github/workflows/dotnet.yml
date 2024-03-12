@@ -99,6 +99,8 @@ jobs:
     needs: helm
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
+    environment: 
+      name: ${{ inputs.environment_name }}
     steps:
       - name: Simulate Deployment to Development
         run: echo "Deploying to Development Environment"
@@ -108,6 +110,8 @@ jobs:
     needs: deploy-to-dev
     runs-on: ubuntu-latest
     if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
+    environment: 
+      name: ${{ inputs.environment_name }}
     steps:
       - name: Simulate Deployment to Staging
         run: echo "Deploying to Staging Environment"

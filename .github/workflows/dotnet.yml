@@ -41,6 +41,8 @@ jobs:
     uses: szirmaibence98/templates/.github/workflows/snyk.yml@main
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+    with:
+      release: ${{ github.event.inputs.release == 'true' }}
       
   semgrep:
     name: 'Semgrep'

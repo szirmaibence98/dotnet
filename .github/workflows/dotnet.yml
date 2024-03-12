@@ -30,37 +30,30 @@ on:
         default: 'false'
 
 jobs:
-
     
   gitversion:
     name: 'GitVersion'
     #needs: gitleaks
     uses: szirmaibence98/templates/.github/workflows/gitversion.yml@main
 
-  gitleaks:
-    name: 'GitLeaks'
-#    needs: gitversion
-    uses: szirmaibence98/templates/.github/workflows/gitleaks.yml@main
-
   snyk:
     name: 'Snyk'
-#    needs: gitversion
+    needs: gitversion
     uses: szirmaibence98/templates/.github/workflows/snyk.yml@main
     secrets:
       SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       
   semgrep:
     name: 'Semgrep'
-#    needs: gitversion
+    needs: gitversion
     uses: szirmaibence98/templates/.github/workflows/semgrep.yml@main
     
   build:
     name: 'Build'
     needs:  
      - gitversion
-#     - gitleaks
-#     - snyk
-#     - semgrep
+     - snyk
+     - semgrep
     uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main
     with:
       dotnet-version: '8.0.x'
@@ -84,9 +77,8 @@ jobs:
     needs: docker
     uses: szirmaibence98/templates/.github/workflows/trivy.yml@main
 
-
   helm:
-#    needs: trivy
+    needs: trivy
     needs: docker
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main
     if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}

@@ -1,0 +1,4 @@
+[
+  {"Cmd": "from", "Value": ["node:14.17.0"]},
+  {"Cmd": "label", "Value": ["MAINTAINER=example@example.com"]}
+]

@@ -99,7 +99,8 @@ jobs:
           chmod +x opa
           sudo mv opa /usr/local/bin/
       - name: Run OPA Policy Check
-        run: opa eval --format pretty --data ./policy.rego --input ./input.json "data.my_policy.allow"
+        run: opa eval --format pretty --data policy.rego --input input.json "data.dockerfile.allow"
+
 
 
 

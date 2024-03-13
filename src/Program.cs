@@ -8,7 +8,7 @@ class Program
         Console.WriteLine("Hello, World!");
 
         // Simulate usage of a hardcoded password (trigger for Snyk)
-        string password = "mySuperSecretPassword12vg5545eedg";
+        string password = "mySuperSecretPassword12vg5545eedssg";
         Console.WriteLine($"Password: {password}");
     }
 }

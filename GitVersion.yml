@@ -1,4 +1,4 @@
-mode: GitHubFlow
+mode: Mainline
 branches:
   main:
     regex: ^main$

@@ -82,6 +82,26 @@ jobs:
     uses: szirmaibence98/templates/.github/workflows/trivy.yml@main
     if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
 
+
+
+  OPA:
+    name: 'OPA'
+    needs: docker
+    if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.1
+      
+      - name: Install OPA
+        run: |
+          curl -L -o opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
+          chmod +x opa
+          sudo mv opa /usr/local/bin/
+      - name: Run OPA Policy Check
+        run: opa eval --format pretty --data policy/ --input input.json "data.my_policy.allow"
+
+
+
   helm:
     needs: trivy
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main

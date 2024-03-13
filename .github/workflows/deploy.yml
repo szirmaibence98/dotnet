@@ -79,15 +79,16 @@ jobs:
   trivy:
     name: 'Trivy'
     needs: docker
-    runs-on: ubuntu-latest
+    uses: szirmaibence98/templates/.github/workflows/trivy.yml@main
     if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
 
 
 
-  OPA:
-    name: 'OPA'
+  opa:
+    name: 'Open Policy Agent'
     needs: docker
     if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4.1.1

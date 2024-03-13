@@ -20,17 +20,12 @@ on:
       
   workflow_dispatch:
     inputs:
-#      release:
-#        description: 'Create Release'
-#        required: false
-#        default: 'false'
       feature:
         description: 'Deploy Feature'
         required: false
         default: 'false'
 
 jobs:
-
     
   gitversion:
     name: 'GitVersion'
@@ -140,57 +135,3 @@ jobs:
 
 
   
-  
-  create-tag-after-prod:
-    name: 'Create Tag After Prod'
-    needs: deploy-prod
-    runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.1.1
-      
-      - name: Download version file
-        uses: actions/download-artifact@v4.1.4
-        with:
-          name: version
-          path: /tmp
-      
-      - name: Read version from file
-        id: read_version
-        run: echo "VERSION=$(cat /tmp/version.txt)" >> $GITHUB_ENV
-      
-      - name: Configure Git
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-      
-      - name: Create and push tag based on GitVersion
-        run: |
-          VERSION=${{ env.VERSION }}
-          git tag $VERSION
-          git push origin $VERSION
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: $TAG_NAME
-          release_name: Release $TAG_NAME
-          draft: false
-          prerelease: false
-  
-      # Optionally, upload release assets
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./path/to/your/asset.zip
-          asset_name: asset.zip
-          asset_content_type: application/zip

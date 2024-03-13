@@ -1,14 +1,17 @@
-mode: Mainline
+mode: GitHubFlow
 branches:
   main:
     regex: ^main$
     tag: ''
     increment: Patch
   feature:
-    regex: ^feature\/[a-zA-Z0-9-]+$
-    tag: useBranchName
-    increment: None
+    regex: ^features?[\/-][a-zA-Z0-9_.-]+$
+    tag: alpha
+    increment: Inherit
   hotfix:
-    regex: ^hotfix\/[a-zA-Z0-9-]+$
+    regex: ^hotfix[\/-][a-zA-Z0-9_.-]+$
     tag: beta
     increment: Patch
+ignore:
+  sha: []
+merge-message-formats: {}

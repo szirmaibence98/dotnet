@@ -68,7 +68,7 @@ jobs:
 #     - snyk
 #     - semgrep
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
-    if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') || github.ref == 'refs/heads/hotfix' }}
+    if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') || startsWith(github.ref, 'refs/heads/hotfix/') }}
     with:
       image-name: szirmaibence98/testimage
       docker-context: '.'
@@ -108,7 +108,7 @@ jobs:
   helm:
     needs: docker
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main
-    if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') || github.ref == 'refs/heads/hotfix' }}
+    if: ${{ github.ref == 'refs/heads/main' || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') || startsWith(github.ref, 'refs/heads/hotfix/') }}
     with:
       release: ${{ github.event.inputs.release == 'true' }}
     secrets:
@@ -143,7 +143,7 @@ jobs:
     needs: helm
     runs-on: ubuntu-latest
     if: |
-      ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/hotfix' }}
+      ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') || startsWith(github.ref, 'refs/heads/hotfix/') }}
     environment: 
       name: prod
     steps:

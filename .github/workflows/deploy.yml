@@ -47,6 +47,7 @@ jobs:
 #    with:
 #      release: ${{ github.event.inputs.release == 'true' }}
     
+
   build:
     name: 'Build'
     needs:  
@@ -54,9 +55,17 @@ jobs:
     uses: szirmaibence98/templates/.github/workflows/dotnet.yml@main
     with:
       dotnet-version: '8.0.x'
-      working-directory: 'src'
+      project-paths: >
+        [
+          "src/app1/app1.csproj",
+          "src/app2/app2.csproj"
+        ]
       release: ${{ github.event.inputs.release == 'true' }}
-      
+
+
+
+
+  
   docker:
     needs: 
      - build

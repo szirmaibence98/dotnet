@@ -136,7 +136,7 @@ jobs:
 
 
   helm:
-    needs: docker
+#    needs: docker
     uses: szirmaibence98/templates/.github/workflows/helm.yml@main
     with:
       release: ${{ github.event.inputs.release == 'true' }}

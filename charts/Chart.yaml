@@ -3,9 +3,9 @@ name: dotnet
 description: A Helm chart for Kubernetes deploying dotnet
 type: application
 dependencies:  
-  - name: basetest
+  - name: base
     version: "0.1.10"  
-    repository: "oci://szirmaibence98.azurecr.io/baseasdfg/"
+    repository: "oci://szirmaibence98.azurecr.io/base/"
     alias: dotnet
 version: 1.0.0
 appVersion: "1.16.0"

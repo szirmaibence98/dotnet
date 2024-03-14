@@ -143,6 +143,7 @@ jobs:
     with:
       release: ${{ github.event.inputs.release == 'true' }}
       repository: ${{ vars.REPOSITORY_NAME  }}
+      chart_path: chart/dotnet/
     secrets:
       ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}

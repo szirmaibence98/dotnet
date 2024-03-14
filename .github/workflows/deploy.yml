@@ -73,8 +73,21 @@ jobs:
      - build
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
     with:
-      image-names: '[{"image-name": "szirmaibence98/testimage1", "docker-context": ".", "docker-file": "./dockerfiles/Dockerfile.testimage1"}, {"image-name": "szirmaibence98/testimage2", "docker-context": ".", "docker-file": "./dockerfiles/Dockerfile.testimage2"}]'
+      image-names: >
+        [
+          {
+            "image-name": "szirmaibence98/testimage1",
+            "docker-context": ".",
+            "docker-file": "./Dockerfile"
+          },
+          {
+            "image-name": "szirmaibence98/testimage2",
+            "docker-context": ".",
+            "docker-file": "./Dockerfile"
+          }
+        ]
       release: ${{ github.event.inputs.release == 'true' }}
+
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}

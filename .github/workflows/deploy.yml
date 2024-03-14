@@ -57,9 +57,12 @@ jobs:
       dotnet-version: '8.0.x'
       project-paths: >
         [
-#          "src/app1/dotnet.csproj",
           "src/app2/dotnet.csproj"
         ]
+#        [
+#          "src/app1/dotnet.csproj",
+#          "src/app2/dotnet.csproj"
+#        ]
       release: ${{ github.event.inputs.release == 'true' }}
 
 

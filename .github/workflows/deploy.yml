@@ -146,26 +146,26 @@ jobs:
       ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
 
 
-#  dev:
-#    needs: helm
-#    uses: szirmaibence98/templates/.github/workflows/deploy.yml@main
-#    with:
-#      environment: dev
-#      deploy_condition: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
+  dev:
+    needs: helm
+    uses: szirmaibence98/templates/.github/workflows/deploy.yml@main
+    with:
+      environment: dev
+      deploy_condition: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') || (startsWith(github.ref, 'refs/heads/feature/') && github.event.inputs.feature == 'true') }}
 
-#  staging:
-#    needs: helm
-#    uses: szirmaibence98/templates/.github/workflows/deploy.yml@main
-#    with:
-#      environment: staging
-#      deploy_condition: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') }}
+  staging:
+    needs: helm
+    uses: szirmaibence98/templates/.github/workflows/deploy.yml@main
+    with:
+      environment: staging
+      deploy_condition: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') }}
       
-#  prod:
-#    needs: helm
-#    uses: szirmaibence98/templates/.github/workflows/deploy.yml@main
-#    with:
-#      environment: prod
-#      deploy_condition: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') || startsWith(github.ref, 'refs/heads/hotfix/') }}
+  prod:
+    needs: helm
+    uses: szirmaibence98/templates/.github/workflows/deploy.yml@main
+    with:
+      environment: prod
+      deploy_condition: ${{ github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') || startsWith(github.ref, 'refs/heads/hotfix/') }}
       
 
 

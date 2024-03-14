@@ -1,0 +1,12 @@
+global:
+  application:
+    name: dotnet
+    track: stable
+  image:
+    repository: szirmaibence98.azurecr.io
+    group: dotnet
+    name: dotnet
+
+dotnet:
+  application:
+    name: dotnet

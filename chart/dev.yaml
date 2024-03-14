@@ -1,1 +1,14 @@
-d
+global:
+  replicaCount: 1
+  application:
+    track: dev
+  image:
+    pullPolicy: Always
+    tag: latest
+
+
+editor-ui:
+
+  ingress:
+    enabled: true
+    url: editor-ui-dev.dqrke.intranet.nav.gov.hu

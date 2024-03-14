@@ -67,21 +67,32 @@ jobs:
 
 
 
-
-  
+jobs:
   docker:
     needs: 
      - build
-#     - snyk
-#     - semgrep
     uses: szirmaibence98/templates/.github/workflows/docker.yml@main
     with:
-      image-name: szirmaibence98/testimage
-      docker-context: '.'
+      image-names: '[{"image-name": "szirmaibence98/testimage1", "docker-context": "."}, {"image-name": "szirmaibence98/testimage2", "docker-context": "."}]'
       release: ${{ github.event.inputs.release == 'true' }}
     secrets:
       DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+  
+#  docker:
+#    needs: 
+#     - build
+##     - snyk
+##     - semgrep
+#    uses: szirmaibence98/templates/.github/workflows/docker.yml@main
+#    with:
+#      image-name: szirmaibence98/testimage
+#      docker-context: '.'
+#      release: ${{ github.event.inputs.release == 'true' }}
+#    secrets:
+#      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+#      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
 #  trivy:
 #    name: 'Trivy'
